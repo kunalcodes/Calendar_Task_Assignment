@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
     app:strokeWidth="4dp"
+    android:id="@+id/cvDateItem"
+    android:layout_margin="4dp"
     android:layout_gravity="center"
-    app:cardBackgroundColor="@color/blue"
-    app:strokeColor="@color/blue"
+    app:cardBackgroundColor="@color/white"
+    app:strokeColor="@color/white"
     app:cardCornerRadius="15dp">
 
     <LinearLayout
@@ -18,12 +20,12 @@
 
         <TextView
             android:id="@+id/tvDateItem"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:text="14"
-            android:textStyle="bold"
+            android:textStyle="normal"
             android:layout_gravity="center"
             android:gravity="center"
-            android:textSize="24sp"
+            android:textSize="14sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 

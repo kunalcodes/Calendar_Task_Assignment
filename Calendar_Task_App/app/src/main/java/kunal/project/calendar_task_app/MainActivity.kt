@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import java.time.LocalDate
+import java.time.MonthDay
 import java.time.Year
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -36,12 +37,13 @@ class MainActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun populateCalendar() {
+        val today = MonthDay.from(currentDate)
         tvCalendarMonth.text = DateTimeFormatter.ofPattern("MMMM, YYYY").format(currentDate)
         dateList.clear()
         for (i in 1..currentMonth.lengthOfMonth()){
             dateList.add(i.toString())
         }
-        adapter = CalendarAdapter(dateList)
+        adapter = CalendarAdapter(dateList, today.toString())
         val layoutManager = GridLayoutManager(this, 7)
         recyclerViewCalendar.adapter = adapter
         recyclerViewCalendar.layoutManager = layoutManager
