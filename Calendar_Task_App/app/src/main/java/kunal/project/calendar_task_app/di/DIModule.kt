@@ -2,11 +2,13 @@ package kunal.project.calendar_task_app.di
 
 import android.content.Context
 import androidx.room.Room
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import io.reactivex.plugins.RxJavaPlugins
 import kunal.project.calendar_task_app.data.local.TaskDAO
 import kunal.project.calendar_task_app.data.local.TaskDatabase
 import kunal.project.calendar_task_app.data.remote.ApiService
@@ -31,6 +33,7 @@ object DIModule {
         val builder = Retrofit.Builder()
             .baseUrl("http://13.232.92.136:8084/")
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build())
             .build()
         return builder.create(ApiService::class.java)

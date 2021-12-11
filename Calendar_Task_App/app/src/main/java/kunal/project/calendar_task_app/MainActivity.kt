@@ -6,17 +6,23 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
+import kunal.project.calendar_task_app.data.remote.request.StoreTaskRequestModel
+import kunal.project.calendar_task_app.data.remote.request.TaskRequestModel
 import kunal.project.calendar_task_app.utils.CalendarAdapter
 import kunal.project.calendar_task_app.utils.DateClickListener
+import kunal.project.calendar_task_app.viewmodel.TaskViewModel
 import java.time.LocalDate
 import java.time.MonthDay
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import kotlin.collections.ArrayList
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), DateClickListener {
 
     private var dateList = ArrayList<String>()
@@ -24,6 +30,8 @@ class MainActivity : AppCompatActivity(), DateClickListener {
     lateinit var todaysDate: LocalDate
     lateinit var currentMonth: YearMonth
     lateinit var adapter: CalendarAdapter
+    lateinit var sendDate : String
+    private val viewModel : TaskViewModel by viewModels()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,7 +75,9 @@ class MainActivity : AppCompatActivity(), DateClickListener {
             populateCalendar()
         }
         btnAddNewTask.setOnClickListener {
-            Toast.makeText(this, "Added", Toast.LENGTH_SHORT).show()
+            val taskRequestModel = TaskRequestModel("title", "desc", sendDate)
+            val storeTaskRequestModel = StoreTaskRequestModel(1014, taskRequestModel)
+            viewModel.storeTask(storeTaskRequestModel)
         }
     }
 
@@ -77,6 +87,7 @@ class MainActivity : AppCompatActivity(), DateClickListener {
             btnAddNewTask.setBackgroundTintList(
                 this.getResources().getColorStateList(R.color.blue)
             )
+            sendDate = date
             btnAddNewTask.isEnabled = true
         } else {
             Toast.makeText(this, "Nothing", Toast.LENGTH_SHORT).show()
