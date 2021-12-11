@@ -1,35 +1,36 @@
 package kunal.project.calendar_task_app
 
-import android.icu.text.SimpleDateFormat
+import android.content.res.ColorStateList
+import android.content.res.Resources
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
+import kunal.project.calendar_task_app.utils.CalendarAdapter
+import kunal.project.calendar_task_app.utils.DateClickListener
 import java.time.LocalDate
 import java.time.MonthDay
-import java.time.Year
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
-import java.util.*
 import kotlin.collections.ArrayList
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), DateClickListener {
 
     private var dateList = ArrayList<String>()
-    lateinit var currentDate : LocalDate
-    lateinit var currentMonth : YearMonth
-    lateinit var currentYear : Year
-    lateinit var adapter : CalendarAdapter
+    lateinit var currentDate: LocalDate
+    lateinit var todaysDate: LocalDate
+    lateinit var currentMonth: YearMonth
+    lateinit var adapter: CalendarAdapter
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        currentDate = LocalDate.now()
+        todaysDate = LocalDate.now()
+        currentDate = todaysDate
         currentMonth = YearMonth.from(currentDate)
         initViewsAndClickListeners()
         populateCalendar()
@@ -37,13 +38,18 @@ class MainActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun populateCalendar() {
-        val today = MonthDay.from(currentDate)
+        btnAddNewTask.isEnabled = false
+        btnAddNewTask.setBackgroundTintList(
+            this.getResources().getColorStateList(R.color.grey)
+        )
+        val today = "${YearMonth.from(todaysDate)}-${MonthDay.from(currentDate).dayOfMonth}"
+        currentMonth = YearMonth.from(currentDate)
         tvCalendarMonth.text = DateTimeFormatter.ofPattern("MMMM, YYYY").format(currentDate)
         dateList.clear()
-        for (i in 1..currentMonth.lengthOfMonth()){
-            dateList.add(i.toString())
+        for (i in 1..currentMonth.lengthOfMonth()) {
+            dateList.add("${currentMonth}-$i")
         }
-        adapter = CalendarAdapter(dateList, today.toString())
+        adapter = CalendarAdapter(dateList, today, this)
         val layoutManager = GridLayoutManager(this, 7)
         recyclerViewCalendar.adapter = adapter
         recyclerViewCalendar.layoutManager = layoutManager
@@ -53,14 +59,31 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initViewsAndClickListeners() {
         btnNextMonth.setOnClickListener {
-            currentMonth = currentMonth.plusMonths(1)
             currentDate = currentDate.plusMonths(1)
             populateCalendar()
         }
         btnPrevMonth.setOnClickListener {
-            currentMonth = currentMonth.minusMonths(1)
             currentDate = currentDate.minusMonths(1)
             populateCalendar()
+        }
+        btnAddNewTask.setOnClickListener {
+            Toast.makeText(this, "Added", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onDateClicked(date: String, isSelected: Boolean) {
+        if (isSelected) {
+            Toast.makeText(this, date, Toast.LENGTH_SHORT).show()
+            btnAddNewTask.setBackgroundTintList(
+                this.getResources().getColorStateList(R.color.blue)
+            )
+            btnAddNewTask.isEnabled = true
+        } else {
+            Toast.makeText(this, "Nothing", Toast.LENGTH_SHORT).show()
+            btnAddNewTask.setBackgroundTintList(
+                this.getResources().getColorStateList(R.color.grey)
+            )
+            btnAddNewTask.isEnabled = false
         }
     }
 }
