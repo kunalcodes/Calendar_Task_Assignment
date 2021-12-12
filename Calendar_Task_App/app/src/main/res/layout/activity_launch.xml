@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EAEAEA"
+    android:orientation="vertical"
+    android:paddingTop="24sp"
+    tools:context=".views.LaunchActivity">
+
+    <TextView
+        android:id="@+id/tvSelectYearMonthHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="8dp"
+        android:text="Select A Month and Year"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/tvSelectedYearMonth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSelectYearMonthHeading"
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="32sp"
+        android:layout_marginTop="36sp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="4dp"
+        android:text="Selected Month and Year"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tvSelectedMonth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSelectedYearMonth"
+        android:layout_alignStart="@+id/tvSelectedYearMonth"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="4dp"
+        android:text="12"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tvSelectedYear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSelectedYearMonth"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16sp"
+        android:layout_toEndOf="@id/tvSelectedMonth"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="4dp"
+        android:text="2011"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSelectedMonth"
+        android:layout_marginTop="32sp"
+        android:gravity="center">
+
+        <Spinner
+            android:id="@+id/spinnerSelectMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvSelectedMonth"
+            android:layout_alignEnd="@+id/tvSelectedMonth"
+            android:layout_marginEnd="36dp"
+            android:paddingVertical="20sp" />
+
+        <Spinner
+            android:id="@+id/spinnerSelectYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvSelectedYear"
+            android:layout_alignStart="@+id/tvSelectedYear"
+            android:paddingVertical="20sp" />
+    </LinearLayout>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSelectDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="32sp"
+        android:layout_marginVertical="48dp"
+        android:backgroundTint="@color/blue"
+        android:paddingVertical="16dp"
+        android:text="Proceed"
+        app:cornerRadius="8dp" />
+
+</RelativeLayout>

@@ -24,6 +24,7 @@ import kunal.project.calendar_task_app.utils.TaskAdapter
 import kunal.project.calendar_task_app.utils.TaskClickListener
 import kunal.project.calendar_task_app.viewmodel.TaskViewModel
 import java.time.LocalDate
+import java.time.Month
 import java.time.MonthDay
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -46,8 +47,10 @@ class MainActivity : AppCompatActivity(), DateClickListener, TaskClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val monthVal = intent.getIntExtra("month", 11)
+        val yearVal = intent.getIntExtra("year", 2011)
         todaysDate = LocalDate.now()
-        currentDate = todaysDate
+        currentDate = LocalDate.of(yearVal, monthVal, 1)
         currentMonth = YearMonth.from(currentDate)
         initViewsAndClickListeners()
         populateCalendar()
@@ -59,7 +62,7 @@ class MainActivity : AppCompatActivity(), DateClickListener, TaskClickListener {
         btnAddNewTask.setBackgroundTintList(
             this.getResources().getColorStateList(R.color.grey)
         )
-        val today = "${YearMonth.from(todaysDate)}-${MonthDay.from(currentDate).dayOfMonth}"
+        val today = "${YearMonth.from(todaysDate)}-${MonthDay.from(todaysDate).dayOfMonth}"
         currentMonth = YearMonth.from(currentDate)
         tvCalendarMonth.text = DateTimeFormatter.ofPattern("MMMM, YYYY").format(currentDate)
         dateList.clear()
