@@ -4,7 +4,7 @@ Add to do list to your calendar.
 
 
 # Features ✨
-* Selcet any date from the calendar
+* Select any date from the calendar
 * Add to do tasks on selected dates
 * preview your to do list
 * delete items from your list
