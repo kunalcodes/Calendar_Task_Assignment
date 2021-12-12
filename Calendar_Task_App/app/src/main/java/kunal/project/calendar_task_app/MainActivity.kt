@@ -1,5 +1,6 @@
 package kunal.project.calendar_task_app
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.os.Build
@@ -78,6 +79,10 @@ class MainActivity : AppCompatActivity(), DateClickListener {
             val taskRequestModel = TaskRequestModel("title", "desc", sendDate)
             val storeTaskRequestModel = StoreTaskRequestModel(1014, taskRequestModel)
             viewModel.storeTask(storeTaskRequestModel)
+        }
+        btnSeeTaskList.setOnClickListener {
+            val intent = Intent(this@MainActivity, TaskListActivity::class.java)
+            startActivity(intent)
         }
     }
 
