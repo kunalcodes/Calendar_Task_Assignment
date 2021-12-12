@@ -1,20 +1,17 @@
-package kunal.project.calendar_task_app
+package kunal.project.calendar_task_app.views
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kunal.project.calendar_task_app.data.local.TaskModel
-import kunal.project.calendar_task_app.utils.CalendarAdapter
 import kunal.project.calendar_task_app.utils.TaskClickListener
 import kunal.project.calendar_task_app.viewmodel.TaskViewModel
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_task_list.*
+import kunal.project.calendar_task_app.R
 import kunal.project.calendar_task_app.utils.TaskAdapter
 
 

@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingTop="24sp"
     android:background="#EAEAEA"
-    tools:context=".TaskListActivity">
+    tools:context=".views.TaskListActivity">
 
     <TextView
         android:id="@+id/tvTaskListTitle"
@@ -18,7 +19,7 @@
         android:paddingVertical="8dp"
         android:text="Task List"
         android:textColor="@color/black"
-        android:textSize="28sp"
+        android:textSize="24sp"
         android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView

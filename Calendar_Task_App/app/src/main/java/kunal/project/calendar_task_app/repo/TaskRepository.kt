@@ -122,4 +122,8 @@ class TaskRepository @Inject constructor(val dao: TaskDAO, val apiService: ApiSe
         return dao.getTaskListFromDB()
     }
 
+    fun showTaskListOnDate(date: String): Flowable<List<TaskModel>> {
+        return dao.getDailyTaskListFromDB(date)
+    }
+
 }

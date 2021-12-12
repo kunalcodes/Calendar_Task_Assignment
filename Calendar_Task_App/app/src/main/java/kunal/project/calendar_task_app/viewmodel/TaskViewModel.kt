@@ -24,4 +24,8 @@ class TaskViewModel @Inject constructor(val repo : TaskRepository) : ViewModel()
         repo.deleteTask(taskModel)
     }
 
+    fun showTaskListOnDate(date: String): Flowable<List<TaskModel>> {
+        return repo.showTaskListOnDate(date)
+    }
+
 }

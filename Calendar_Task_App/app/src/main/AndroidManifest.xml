@@ -14,10 +14,13 @@
         android:theme="@style/Theme.Calendar_Task_App"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".TaskListActivity"
+            android:name=".views.TaskListActivity"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".views.AddTaskActivity"
+            android:exported="true" />
+        <activity
+            android:name=".views.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

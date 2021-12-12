@@ -22,4 +22,7 @@ interface TaskDAO {
     @Insert (onConflict = OnConflictStrategy.REPLACE)
     fun storeTaskListToDB(taskModelList: ArrayList<TaskModel>)
 
+    @Query ("Select * from tasks where date = :date")
+    fun getDailyTaskListFromDB(date: String): Flowable<List<TaskModel>>
+
 }

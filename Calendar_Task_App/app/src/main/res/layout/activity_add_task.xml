@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EAEAEA"
+    android:orientation="vertical"
+    android:paddingTop="24sp"
+    tools:context=".views.AddTaskActivity">
+
+    <TextView
+        android:id="@+id/tvAddTaskHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:lines="1"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="8dp"
+        android:text="Add new Task"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/tvAddTaskTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32sp"
+        android:layout_marginTop="36sp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="4dp"
+        android:text="Title"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/etAddTaskTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32sp"
+        android:background="@drawable/et_bg_white"
+        android:hint="Add Title"
+        android:inputType="text"
+        android:lines="1"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="16dp"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tvAddTaskDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32sp"
+        android:layout_marginTop="36sp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="4dp"
+        android:text="Description"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/etAddTaskDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32sp"
+        android:background="@drawable/et_bg_white"
+        android:gravity="top"
+        android:hint="Add Description"
+        android:inputType="textMultiLine"
+        android:lines="5"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="16dp"
+        android:textSize="18sp" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAddTask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32sp"
+        android:layout_marginTop="48dp"
+        android:backgroundTint="@color/blue"
+        android:paddingVertical="16dp"
+        android:text="Add Task"
+        app:cornerRadius="8dp" />
+
+</LinearLayout>

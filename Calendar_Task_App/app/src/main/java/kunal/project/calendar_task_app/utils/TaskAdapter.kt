@@ -26,7 +26,7 @@ class TaskAdapter(
         val task = taskList[position]
         holder.itemView.apply {
             tvTaskItemTitle.text = task.title
-            tvTaskItemDate.text = "Task on date: ${(task.date)}"
+            tvTaskItemDate.text = "Task Date: ${(task.date)}"
             tvTaskItemDesc.text = task.desc
             if (position == lastCheckedPosition) {
                 layoutTaskMenu.setBackgroundColor(Color.parseColor("#3B4FBF"))

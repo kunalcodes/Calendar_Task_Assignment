@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="24sp"
-    tools:context=".MainActivity">
+    android:paddingTop="24sp"
+    android:background="#EAEAEA"
+    tools:context=".views.MainActivity">
 
     <TextView
         android:id="@+id/tvCalendarTitle"
@@ -13,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:text="Calendar"
+        android:textStyle="bold"
         android:textColor="@color/black"
         android:textSize="24sp" />
 
@@ -70,7 +72,28 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCalendar"
         android:layout_width="match_parent"
-        android:layout_marginTop="8dp"
+        android:paddingVertical="8dp"
+        android:background="@color/white"
         android:layout_below="@id/tvCalendarMonth"
         android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tvTaskListCurrentDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:layout_below="@+id/recyclerViewCalendar"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="8dp"
+        android:text="No Date Selected"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="normal" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewDailyTask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tvTaskListCurrentDate" />
+
 </RelativeLayout>

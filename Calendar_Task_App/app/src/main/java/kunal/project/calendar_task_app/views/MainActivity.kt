@@ -1,8 +1,6 @@
-package kunal.project.calendar_task_app
+package kunal.project.calendar_task_app.views
 
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.content.res.Resources
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,12 +8,20 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_task_list.*
+import kunal.project.calendar_task_app.R
+import kunal.project.calendar_task_app.data.local.TaskModel
 import kunal.project.calendar_task_app.data.remote.request.StoreTaskRequestModel
 import kunal.project.calendar_task_app.data.remote.request.TaskRequestModel
 import kunal.project.calendar_task_app.utils.CalendarAdapter
 import kunal.project.calendar_task_app.utils.DateClickListener
+import kunal.project.calendar_task_app.utils.TaskAdapter
+import kunal.project.calendar_task_app.utils.TaskClickListener
 import kunal.project.calendar_task_app.viewmodel.TaskViewModel
 import java.time.LocalDate
 import java.time.MonthDay
@@ -24,7 +30,7 @@ import java.time.format.DateTimeFormatter
 import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), DateClickListener {
+class MainActivity : AppCompatActivity(), DateClickListener, TaskClickListener {
 
     private var dateList = ArrayList<String>()
     lateinit var currentDate: LocalDate
@@ -32,6 +38,8 @@ class MainActivity : AppCompatActivity(), DateClickListener {
     lateinit var currentMonth: YearMonth
     lateinit var adapter: CalendarAdapter
     lateinit var sendDate : String
+    private var taskList = ArrayList<TaskModel>()
+    lateinit var taskAdapter: TaskAdapter
     private val viewModel : TaskViewModel by viewModels()
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -76,9 +84,9 @@ class MainActivity : AppCompatActivity(), DateClickListener {
             populateCalendar()
         }
         btnAddNewTask.setOnClickListener {
-            val taskRequestModel = TaskRequestModel("title", "desc", sendDate)
-            val storeTaskRequestModel = StoreTaskRequestModel(1014, taskRequestModel)
-            viewModel.storeTask(storeTaskRequestModel)
+            val intent = Intent(this@MainActivity, AddTaskActivity::class.java)
+            intent.putExtra("date", sendDate)
+            startActivity(intent)
         }
         btnSeeTaskList.setOnClickListener {
             val intent = Intent(this@MainActivity, TaskListActivity::class.java)
@@ -88,18 +96,37 @@ class MainActivity : AppCompatActivity(), DateClickListener {
 
     override fun onDateClicked(date: String, isSelected: Boolean) {
         if (isSelected) {
-            Toast.makeText(this, date, Toast.LENGTH_SHORT).show()
+            tvTaskListCurrentDate.text = "Tasks on Date : $date"
+            viewModel.showTaskListOnDate(date).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe {
+                taskList.clear()
+                taskList = it as ArrayList<TaskModel>
+                setTaskRecyclerViewAdapter()
+            }
             btnAddNewTask.setBackgroundTintList(
                 this.getResources().getColorStateList(R.color.blue)
             )
             sendDate = date
             btnAddNewTask.isEnabled = true
         } else {
-            Toast.makeText(this, "Nothing", Toast.LENGTH_SHORT).show()
+            tvTaskListCurrentDate.text = "No Date Selected"
+            taskList.clear()
+            setTaskRecyclerViewAdapter()
             btnAddNewTask.setBackgroundTintList(
                 this.getResources().getColorStateList(R.color.grey)
             )
             btnAddNewTask.isEnabled = false
         }
+    }
+
+    private fun setTaskRecyclerViewAdapter() {
+        taskAdapter = TaskAdapter(taskList, this)
+        val layoutManager = LinearLayoutManager(this)
+        recyclerViewDailyTask.adapter = taskAdapter
+        recyclerViewDailyTask.layoutManager = layoutManager
+    }
+
+    override fun onDeleteClicked(taskModel: TaskModel) {
+        viewModel.deleteTask(taskModel)
     }
 }
