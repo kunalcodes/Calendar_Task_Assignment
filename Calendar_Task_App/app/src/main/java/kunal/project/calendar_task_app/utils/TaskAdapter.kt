@@ -2,9 +2,9 @@ package kunal.project.calendar_task_app.utils
 
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.date_layout.view.*
 import kotlinx.android.synthetic.main.task_layout.view.*
 import kunal.project.calendar_task_app.R
 import kunal.project.calendar_task_app.data.local.TaskModel
@@ -25,29 +25,33 @@ class TaskAdapter(
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         val task = taskList[position]
         holder.itemView.apply {
-            tvTaskItemName.text = task.title
+            tvTaskItemTitle.text = task.title
+            tvTaskItemDate.text = "Task on date: ${(task.date)}"
+            tvTaskItemDesc.text = task.desc
             if (position == lastCheckedPosition) {
-//                cvDateItem.setStrokeColor(Color.parseColor("#3B4FBF"))
-//                cvDateItem.setCardBackgroundColor(Color.parseColor("#3B4FBF"))
-//                tvDateItem.setTextColor(Color.parseColor("#FFFFFF"))
+                layoutTaskMenu.setBackgroundColor(Color.parseColor("#3B4FBF"))
+                tvTaskItemTitle.setTextColor(Color.parseColor("#FFFFFF"))
+//                tvTaskItemTitle.setTextColor(Color.parseColor("#FFFFFF"))
+                layoutTaskDetail.visibility = View.VISIBLE
             } else {
-//                cvDateItem.setStrokeColor(Color.parseColor("#FFFFFF"))
-//                cvDateItem.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
-//                tvDateItem.setTextColor(Color.parseColor("#000000"))
+                layoutTaskMenu.setBackgroundColor(Color.parseColor("#FFFFFF"))
+                tvTaskItemTitle.setTextColor(Color.parseColor("#000000"))
+                layoutTaskDetail.visibility = View.GONE
             }
         }
-        holder.itemView.setOnClickListener {
+        holder.itemView.layoutTaskMenu.setOnClickListener {
             if (holder.adapterPosition == lastCheckedPosition) {
                 lastCheckedPosition = -1
                 notifyItemChanged(holder.adapterPosition)
-                taskClickListener.onTaskClicked(task, false)
             } else {
                 val previousPosition = lastCheckedPosition
                 lastCheckedPosition = holder.adapterPosition
                 notifyItemChanged(holder.adapterPosition)
                 notifyItemChanged(previousPosition)
-                taskClickListener.onTaskClicked(task, true)
             }
+        }
+        holder.itemView.tvTaskItemDelete.setOnClickListener {
+            taskClickListener.onDeleteClicked(task)
         }
     }
 

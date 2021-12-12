@@ -20,4 +20,8 @@ class TaskViewModel @Inject constructor(val repo : TaskRepository) : ViewModel()
         return repo.showTaskList()
     }
 
+    fun deleteTask(taskModel: TaskModel){
+        repo.deleteTask(taskModel)
+    }
+
 }

@@ -23,7 +23,7 @@ class TaskListActivity : AppCompatActivity(), TaskClickListener {
 
     private var taskList = ArrayList<TaskModel>()
     lateinit var adapter: TaskAdapter
-    private val viewModel : TaskViewModel by viewModels()
+    private val viewModel: TaskViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,9 +44,7 @@ class TaskListActivity : AppCompatActivity(), TaskClickListener {
     }
 
 
-    override fun onTaskClicked(taskModel: TaskModel, isSelected: Boolean) {
-        if (isSelected){
-            Toast.makeText(this, "Selected", Toast.LENGTH_SHORT).show()
-        }
+    override fun onDeleteClicked(taskModel: TaskModel) {
+        viewModel.deleteTask(taskModel)
     }
 }

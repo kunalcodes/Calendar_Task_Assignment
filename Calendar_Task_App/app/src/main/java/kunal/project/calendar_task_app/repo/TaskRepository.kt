@@ -9,8 +9,10 @@ import io.reactivex.schedulers.Schedulers
 import kunal.project.calendar_task_app.data.local.TaskDAO
 import kunal.project.calendar_task_app.data.local.TaskModel
 import kunal.project.calendar_task_app.data.remote.ApiService
+import kunal.project.calendar_task_app.data.remote.request.DeleteTaskRequestModel
 import kunal.project.calendar_task_app.data.remote.request.GetTasksRequestModel
 import kunal.project.calendar_task_app.data.remote.request.StoreTaskRequestModel
+import kunal.project.calendar_task_app.data.remote.response.DeleteTaskResponseModel
 import kunal.project.calendar_task_app.data.remote.response.GetTasksResponseModel
 import kunal.project.calendar_task_app.data.remote.response.StoreTaskResponseModel
 import javax.inject.Inject
@@ -34,14 +36,6 @@ class TaskRepository @Inject constructor(val dao: TaskDAO, val apiService: ApiSe
                 override fun onNext(t: StoreTaskResponseModel) {
                     if (t.status == "Success") {
                         Log.d("Kunal", "onNext: Storing to Api Success")
-//                        val task = storeTaskRequestModel.task!!
-//                        val taskModel = TaskModel(
-//                            Random.nextInt(100),
-//                            task.title!!,
-//                            task.description!!,
-//                            task.date!!
-//                        )
-//                        dao.storeTaskToDB(taskModel)
                         syncDBWithApi()
                     } else {
                         Log.d("Kunal", "onNext: Storing to Api Error")
@@ -59,6 +53,33 @@ class TaskRepository @Inject constructor(val dao: TaskDAO, val apiService: ApiSe
             })
     }
 
+    fun deleteTask(taskModel: TaskModel) {
+        val deleteTaskRequestModel = DeleteTaskRequestModel(userID, taskModel.id)
+        apiService.deleteTaskFromAPI(authKey, deleteTaskRequestModel).subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.io()).subscribe(object : Observer<DeleteTaskResponseModel>{
+                override fun onSubscribe(d: Disposable) {
+                    Log.d("Kunal", "onSubscribe: Deleting from Api Subscribe")
+                }
+
+                override fun onNext(t: DeleteTaskResponseModel) {
+                    if (t.status == "Success") {
+                        Log.d("Kunal", "onNext: Deleting from Api Success")
+                        dao.deleteTaskFromDB(taskModel)
+                    } else {
+                        Log.d("Kunal", "onNext: Deleting from Api Error")
+                    }
+                }
+
+                override fun onError(e: Throwable) {
+                    Log.d("Kunal", "onError: Deleting from Api Error")
+                }
+
+                override fun onComplete() {
+                    Log.d("Kunal", "onComplete: Deleting from Api Completed")
+                }
+
+            })
+    }
 
     fun syncDBWithApi() {
         val getTaskRequestModel = GetTasksRequestModel(userID)
@@ -100,4 +121,5 @@ class TaskRepository @Inject constructor(val dao: TaskDAO, val apiService: ApiSe
     fun showTaskList(): Flowable<List<TaskModel>> {
         return dao.getTaskListFromDB()
     }
+
 }
