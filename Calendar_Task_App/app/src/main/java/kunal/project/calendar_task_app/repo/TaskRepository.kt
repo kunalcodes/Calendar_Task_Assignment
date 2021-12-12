@@ -21,7 +21,7 @@ class TaskRepository @Inject constructor(val dao: TaskDAO, val apiService: ApiSe
 
     private val authKey = "d95a5f11-13ef-419a-be7e-5a64cac73624"
     private val userID = 1014
-    private lateinit var taskList: ArrayList<TaskModel>
+    private var taskList = ArrayList<TaskModel>()
 
     fun storeTask(storeTaskRequestModel: StoreTaskRequestModel) {
         apiService.storeTaskToAPI(authKey, storeTaskRequestModel).subscribeOn(Schedulers.io())
@@ -34,14 +34,15 @@ class TaskRepository @Inject constructor(val dao: TaskDAO, val apiService: ApiSe
                 override fun onNext(t: StoreTaskResponseModel) {
                     if (t.status == "Success") {
                         Log.d("Kunal", "onNext: Storing to Api Success")
-                        val task = storeTaskRequestModel.task!!
-                        val taskModel = TaskModel(
-                            Random.nextInt(100),
-                            task.title!!,
-                            task.description!!,
-                            task.date!!
-                        )
-                        dao.storeTaskToDB(taskModel)
+//                        val task = storeTaskRequestModel.task!!
+//                        val taskModel = TaskModel(
+//                            Random.nextInt(100),
+//                            task.title!!,
+//                            task.description!!,
+//                            task.date!!
+//                        )
+//                        dao.storeTaskToDB(taskModel)
+                        syncDBWithApi()
                     } else {
                         Log.d("Kunal", "onNext: Storing to Api Error")
                     }
@@ -70,7 +71,6 @@ class TaskRepository @Inject constructor(val dao: TaskDAO, val apiService: ApiSe
                 override fun onNext(t: GetTasksResponseModel) {
                     t.let {
                         taskList.clear()
-                        dao.clearDB()
                         val tasksResponseModelList = t.tasks
                         tasksResponseModelList?.forEach {
                             val taskModel = TaskModel(
@@ -81,6 +81,7 @@ class TaskRepository @Inject constructor(val dao: TaskDAO, val apiService: ApiSe
                             )
                             taskList.add(taskModel)
                         }
+                        dao.clearDB()
                         dao.storeTaskListToDB(taskList)
                     }
                 }
