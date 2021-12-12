@@ -22,6 +22,11 @@ class TaskAdapter(
         return TaskViewHolder(view)
     }
 
+    /*
+    * binding data to the item views
+    * handling the single item selection condition in the list
+    * calling the delete methods in the parent activity through the interface
+     */
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         val task = taskList[position]
         holder.itemView.apply {

@@ -15,9 +15,13 @@ class LaunchActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_launch)
 
+
+        // setting defult text for the text fields
         tvSelectedYear.text = "2011"
         tvSelectedMonth.text = "08"
 
+
+        // setting the spinner adapter for year spinner
         val yearAdapter = ArrayAdapter.createFromResource(
             this,
             R.array.yearList,
@@ -27,6 +31,8 @@ class LaunchActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         spinnerSelectYear.adapter = yearAdapter
         spinnerSelectYear.onItemSelectedListener = this
 
+
+        // setting the spinner adapter for month spinner
         val monthAdapter = ArrayAdapter.createFromResource(
             this,
             R.array.monthList,
@@ -36,6 +42,8 @@ class LaunchActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         spinnerSelectMonth.adapter = monthAdapter
         spinnerSelectMonth.onItemSelectedListener = this
 
+
+        // send the selected date to main activity when proceed btn clicked
         btnSelectDate.setOnClickListener {
             val intent = Intent(this@LaunchActivity, MainActivity::class.java)
             intent.putExtra("month", tvSelectedMonth.text.toString().toInt())
@@ -44,6 +52,8 @@ class LaunchActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         }
     }
 
+
+    // handling the spinner selections and updating the text fields
     override fun onItemSelected(p0: AdapterView<*>, p1: View?, p2: Int, p3: Long) {
         val Text = p0.getItemAtPosition(p2).toString()
         if (Text.length > 2) {

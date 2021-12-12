@@ -12,18 +12,22 @@ import javax.inject.Inject
 class TaskViewModel @Inject constructor(val repo : TaskRepository) : ViewModel() {
 
 
+    // calling the storeTask method in the repo
     fun storeTask(storeTaskRequestModel: StoreTaskRequestModel) {
         repo.storeTask(storeTaskRequestModel)
     }
 
+    // fetching the all Task list from repo as flowable
     fun showTaskList() : Flowable<List<TaskModel>> {
         return repo.showTaskList()
     }
 
+    // calling the delete task method in the repo
     fun deleteTask(taskModel: TaskModel){
         repo.deleteTask(taskModel)
     }
 
+    // fetching the daily Task list from repo as flowable
     fun showTaskListOnDate(date: String): Flowable<List<TaskModel>> {
         return repo.showTaskListOnDate(date)
     }

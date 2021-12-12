@@ -19,12 +19,20 @@ class AddTaskActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_task)
+
+        //receiving the date of the task sent from the main activity
         sendDate = intent.getStringExtra("date")!!
+
         btnAddTask.setOnClickListener {
             addTask()
         }
     }
 
+    /*
+    * check for validation of the edit text fields
+    * if all fields are valid, then add the new task
+    * finish the activity after done
+     */
     private fun addTask() {
         if (isTitleValid() && isDescriptionValid() && sendDate != null) {
             val taskRequestModel = TaskRequestModel(
@@ -38,6 +46,7 @@ class AddTaskActivity : AppCompatActivity() {
         }
     }
 
+    // set error message if title field is empty
     private fun isTitleValid(): Boolean {
         return if (etAddTaskTitle.text.isNotEmpty()) {
             true
@@ -47,6 +56,7 @@ class AddTaskActivity : AppCompatActivity() {
         }
     }
 
+    // set error message if desc field is empty
     private fun isDescriptionValid(): Boolean {
         return if (etAddTaskDesc.text.isNotEmpty()) {
             true

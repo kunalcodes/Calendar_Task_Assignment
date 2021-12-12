@@ -25,6 +25,11 @@ class TaskRepository @Inject constructor(val dao: TaskDAO, val apiService: ApiSe
     private val userID = 1014
     private var taskList = ArrayList<TaskModel>()
 
+
+    /*
+    * adding the task to the api
+    * on success, syncing the database with the api
+    */
     fun storeTask(storeTaskRequestModel: StoreTaskRequestModel) {
         apiService.storeTaskToAPI(authKey, storeTaskRequestModel).subscribeOn(Schedulers.io())
             .observeOn(Schedulers.io())
@@ -53,6 +58,11 @@ class TaskRepository @Inject constructor(val dao: TaskDAO, val apiService: ApiSe
             })
     }
 
+
+    /*
+    * deleting the task from the api
+    * on success, deleting the task from the db
+    */
     fun deleteTask(taskModel: TaskModel) {
         val deleteTaskRequestModel = DeleteTaskRequestModel(userID, taskModel.id)
         apiService.deleteTaskFromAPI(authKey, deleteTaskRequestModel).subscribeOn(Schedulers.io())
@@ -81,6 +91,11 @@ class TaskRepository @Inject constructor(val dao: TaskDAO, val apiService: ApiSe
             })
     }
 
+    /*
+    * syncing the database
+    * first fetching the tasks from api
+    * after that clearing the database and adding the entire list to the db
+    */
     fun syncDBWithApi() {
         val getTaskRequestModel = GetTasksRequestModel(userID)
         apiService.getTaskListFromAPI(authKey, getTaskRequestModel).subscribeOn(Schedulers.io())
@@ -118,10 +133,13 @@ class TaskRepository @Inject constructor(val dao: TaskDAO, val apiService: ApiSe
             })
     }
 
+    // getting the task items list from the database as flowable
     fun showTaskList(): Flowable<List<TaskModel>> {
         return dao.getTaskListFromDB()
     }
 
+
+    // getting the task items list for given date from the database as flowable
     fun showTaskListOnDate(date: String): Flowable<List<TaskModel>> {
         return dao.getDailyTaskListFromDB(date)
     }

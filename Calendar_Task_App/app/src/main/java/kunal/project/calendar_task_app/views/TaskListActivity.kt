@@ -25,6 +25,11 @@ class TaskListActivity : AppCompatActivity(), TaskClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_list)
+
+        /*
+        * get the list of all tasks from the db wrapped as rxjava flowable
+        * update the list and the ui when there is any change observed
+        */
         viewModel.showTaskList().subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe {
                 taskList.clear()
@@ -33,6 +38,7 @@ class TaskListActivity : AppCompatActivity(), TaskClickListener {
             }
     }
 
+    // set the recyclerview adapter and layout manager
     private fun setRecyclerViewAdapter() {
         adapter = TaskAdapter(taskList, this)
         val layoutManager = LinearLayoutManager(this)
@@ -41,6 +47,7 @@ class TaskListActivity : AppCompatActivity(), TaskClickListener {
     }
 
 
+    // call viewModel delete method when delete is clicked for any item in the list
     override fun onDeleteClicked(taskModel: TaskModel) {
         viewModel.deleteTask(taskModel)
     }

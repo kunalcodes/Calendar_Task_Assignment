@@ -47,15 +47,27 @@ class MainActivity : AppCompatActivity(), DateClickListener, TaskClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // getting the selected month and year from previous screen
         val monthVal = intent.getIntExtra("month", 11)
         val yearVal = intent.getIntExtra("year", 2011)
+
+        // getting current date from the local date object to display in the calendar
         todaysDate = LocalDate.now()
+
+        //setting the calendar date to selected dates from the previous screen
         currentDate = LocalDate.of(yearVal, monthVal, 1)
         currentMonth = YearMonth.from(currentDate)
         initViewsAndClickListeners()
         populateCalendar()
     }
 
+
+    /*
+    * generating the list for calendar and setting the adapter
+    * updating the ui for previous/next months
+    * disabling the addTask by default when no date is selected
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun populateCalendar() {
         btnAddNewTask.isEnabled = false
@@ -78,25 +90,35 @@ class MainActivity : AppCompatActivity(), DateClickListener, TaskClickListener {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initViewsAndClickListeners() {
+        // advance current month by 1
         btnNextMonth.setOnClickListener {
             currentDate = currentDate.plusMonths(1)
             populateCalendar()
         }
+        // reduce value of current month by 1
         btnPrevMonth.setOnClickListener {
             currentDate = currentDate.minusMonths(1)
             populateCalendar()
         }
+        // open new activity on clicking addTask btn
         btnAddNewTask.setOnClickListener {
             val intent = Intent(this@MainActivity, AddTaskActivity::class.java)
             intent.putExtra("date", sendDate)
             startActivity(intent)
         }
+
+        // go to task list activity
         btnSeeTaskList.setOnClickListener {
             val intent = Intent(this@MainActivity, TaskListActivity::class.java)
             startActivity(intent)
         }
     }
 
+    /*
+    * fetching the tasks on the current date if the date is selected
+    * clear the list if no date is selected
+    * enable/ disable the addTask btn when date selected/deselected
+     */
     override fun onDateClicked(date: String, isSelected: Boolean) {
         if (isSelected) {
             tvTaskListCurrentDate.text = "Tasks on Date : $date"
@@ -122,6 +144,9 @@ class MainActivity : AppCompatActivity(), DateClickListener, TaskClickListener {
         }
     }
 
+    /*
+    * setting the daily task adapter and layout manager
+     */
     private fun setTaskRecyclerViewAdapter() {
         taskAdapter = TaskAdapter(taskList, this)
         val layoutManager = LinearLayoutManager(this)
@@ -129,6 +154,10 @@ class MainActivity : AppCompatActivity(), DateClickListener, TaskClickListener {
         recyclerViewDailyTask.layoutManager = layoutManager
     }
 
+    /*
+    * delete the task if the delete btn is clicked
+    * this method is called from the task adapter when task item deleted btn is clicked
+     */
     override fun onDeleteClicked(taskModel: TaskModel) {
         viewModel.deleteTask(taskModel)
     }

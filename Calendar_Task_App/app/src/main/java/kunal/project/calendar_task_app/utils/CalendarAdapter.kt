@@ -21,6 +21,12 @@ class CalendarAdapter(
         return CalendarViewHolder(view)
     }
 
+
+    /*
+    * binding data to the item views
+    * handling the single item selection condition in the list
+    * calling the date selected methods in the parent activity through the interface
+     */
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
         val date = daysList[position]
         holder.itemView.apply {
